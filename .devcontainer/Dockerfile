@@ -43,12 +43,15 @@ RUN sudo mkdir -p /usr/share/dotnet
 RUN $HOME/dotnet-install.sh --install-dir /usr/share/dotnet --jsonfile /setup/global.json
 RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends xdg-utils
+
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 
 # [Optional] Uncomment this section to install additional OS packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends xdg-utils
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 EXPOSE 44348
